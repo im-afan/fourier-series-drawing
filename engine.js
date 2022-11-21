@@ -27,14 +27,33 @@ function center_mass(complex_coords){
     return math.multiply(ret, 1/complex_coords.length);
 }
 
+function center_mass_interpolate(complex_coords){
+    let ret = math.complex(0, 0);
+    let total_points = 0;
+
+    for(var i = 0; i < complex_coords.length-1; i++){
+        let vec = math.subtract(complex_coords[i+1], complex_coords[i]);
+        let dist = vec.abs();
+        console.log(dist);
+        for(let j = 0; j < 1; j += 1/dist){
+            let weighted_1 = math.multiply(complex_coords[i], j);
+            let weighted_2 = math.multiply(complex_coords[i+1], 1-j);
+            ret = math.add(ret, math.add(weighted_1, weighted_2));
+            total_points++;
+        }
+    }
+
+    return math.multiply(ret, 1/total_points);
+}
+
 function calc_constant(n, complex_coords){
     let multiplied = [];
     for(var i = 0; i < complex_coords.length; i++){
         multiplied.push(math.multiply(complex_coords[i], math.complex({abs: 1, arg: - 2 * Math.PI * n * (i/complex_coords.length)})));
         //circle(multiplied[i].re, multiplied[i].im, 20);
     }
-    var c = center_mass(multiplied);
-
+    //var c = center_mass_interpolate(multiplied);
+    let c = center_mass(multiplied);
     //fill(0, 255, 0);
     center_masses.push(c);
     circle(c.re, c.im, 50);
@@ -43,7 +62,7 @@ function calc_constant(n, complex_coords){
 }
 
 function evaluate_fourier_series(radii, t){
-    var lowest_vel = -(radii.length-1)/2;
+    var lowest_vel = -Math.floor(radii.length/2);
     var cur = math.complex(0, 0);
     var centers = [];
 
@@ -52,12 +71,12 @@ function evaluate_fourier_series(radii, t){
     for(var i = Math.floor(radii.length/2); i < radii.length; i++){
         //console.log(i);
         //console.log(radii.length -i -1);
-        var piece = math.multiply(radii[i], math.complex({abs: 1, arg:t*(lowest_vel+i)}));
+        var piece = math.multiply(radii[i], math.complex({abs: 1, arg: 2*Math.PI*t*(lowest_vel+i)}));
         //console.log(t*(lowest_vel+i));
         cur = math.add(cur, piece);
         centers.push(cur);
         
-        piece = math.multiply(radii[radii.length-i-1], math.complex({abs: 1, arg:t*(lowest_vel+i)}));
+        piece = math.multiply(radii[radii.length-i-1], math.complex({abs: 1, arg:2*Math.PI*t*(lowest_vel+radii.length-i-1)}));
         cur = math.add(cur, piece);
         centers.push(cur);
     }

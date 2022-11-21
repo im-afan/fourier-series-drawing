@@ -4,7 +4,7 @@ drawingState = 0; //0 = before drawing, 1 = during drawing, 2 = after drawing
 radii = [];
 time = 0;
 center_masses = [];
-const ACCURACY = 100;
+const ACCURACY = 10;
 //pen_trail = new ListNode(null, {x: 0, y: 0}, null);
 
 debug = true;
@@ -59,12 +59,13 @@ function update_notdrawing(){
             pos_y.push(coords[i].im);
         }*/
         radii = calculate_fourier_series(pos_x, pos_y, ACCURACY);
-        /*radii[ACCURACY] = math.add(radii[ACCURACY], math.complex(-200, -500));
+        //radii[ACCURACY] = math.add(radii[ACCURACY], math.complex(-200, -500));
+        //radii[ACCURACY] = math.multiply(radii[ACCURACY], 1/2);
         for(let i = 0; i < radii.length; i++){
-            if(i != ACCURACY){
-                radii[i] = math.multiply(radii[i], 5);
-            }
-        }*/
+            //if(i != ACCURACY){
+                radii[i] = math.multiply(radii[i], 1/2);
+            //}
+        }
         console.log(radii);
     }
     let centers = evaluate_fourier_series(radii, time);
@@ -98,15 +99,15 @@ function update_notdrawing(){
         circle(pen_trail[i].re, pen_trail[i].im, 2);
     }
 
-    for(var i = 0; i < center_masses.length; i++){
+    /*for(var i = 0; i < center_masses.length; i++){
         fill(255, 0, 0);
         circle(center_masses[i].re, center_masses[i].im, 40);
-    }
+    }*/
 
-    for(var i = 0; i < pos_x.length; i++){
+    /*for(var i = 0; i < pos_x.length; i++){
         fill(0);
         circle(pos_x[i], pos_y[i], 10);
-    }
+    }*/
     
     if(time % 6.28 >= 6.279){
         pen_trail = [];
