@@ -112,7 +112,7 @@ function update_notdrawing(){
     if(time % 6.28 >= 6.279){
         pen_trail = [];
     }
-    time += 0.01;
+    time += 0.002;
 
 }
 
