@@ -60,10 +60,10 @@ function update_notdrawing(){
         }*/
         radii = calculate_fourier_series(pos_x, pos_y, ACCURACY);
         //radii[ACCURACY] = math.add(radii[ACCURACY], math.complex(-200, -500));
-        //radii[ACCURACY] = math.multiply(radii[ACCURACY], 1/2);
+        radii[ACCURACY] = math.multiply(radii[ACCURACY], 1/2);
         for(let i = 0; i < radii.length; i++){
             //if(i != ACCURACY){
-                radii[i] = math.multiply(radii[i], 1/2);
+                radii[i] = math.multiply(radii[i], 1);
             //}
         }
         console.log(radii);
